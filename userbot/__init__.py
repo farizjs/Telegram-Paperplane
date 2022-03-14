@@ -106,11 +106,24 @@ HEROKU_APPNAME = os.environ.get("HEROKU_APPNAME") or None
 
 WOLFRAM_ID = os.environ.get("WOLFRAM_ID") or None
 
+# Inline bot helper
+BOT_TOKEN = os.environ.get("BOT_TOKEN") or None
+BOT_USERNAME = os.environ.get("BOT_USERNAME") or None
+
 # pylint: disable=invalid-name
 if STRING_SESSION:
     bot = TelegramClient(StringSession(STRING_SESSION), API_KEY, API_HASH)
 else:
     bot = TelegramClient("userbot", API_KEY, API_HASH)
+
+if BOT_TOKEN is not None:
+    tgbot = TelegramClient(
+        "TG_BOT_TOKEN",
+        api_id=API_KEY,
+        api_hash=API_HASH).start(
+        bot_token=BOT_TOKEN)
+else:
+    tgbot = None
 
 
 async def check_botlog_chatid():
