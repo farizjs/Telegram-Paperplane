@@ -16,21 +16,17 @@
 
 import os
 
-from telebot import ALIVE_NAME, CMD_HELP, CMD_HNDLR, CMD_LIST
+from telebot import ALIVE_NAME, CMD_HELP, CMD_LIST
 from telebot.telebotConfig import Config
 
-DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "TeleBot User"
-CMD_HNDLR = Config.CMD_HNDLR
-CUSTOM_HELP_EMOJI = os.environ.get("CUSTOM_HELP_EMOJI", "⚡")
-
-if CMD_HNDLR is None:
-    CMD_HNDLR = "."
+DEFAULTUSER = ALIVE_NAME
+CUSTOM_HELP_EMOJI = "⚡"
 
 
-@telebot.on(admin_cmd(pattern="help ?(.*)"))
+@register(outgoing=True, pattern="help ?(.*)")
 async def cmd_list(event):
     if not event.text[0].isalpha() and event.text[0] not in ("/", "#", "@", "!"):
-        tgbotusername = Var.TG_BOT_USER_NAME_BF_HER
+        tgbotusername = BOT_USERNAME
         input_str = event.pattern_match.group(1)
         if tgbotusername is None or input_str == "text":
             string = ""
@@ -82,5 +78,5 @@ async def cmd_list(event):
                 await event.delete()
             except BaseException:
                 await event.edit(
-                    f"This bot has inline disabled. Please enable it to use `{CMD_HANDLR}help`.\nGet help from [here](t.me/FlicksSupport)"
+                    f"This bot has inline disabled. Please enable it to use `.help`.\nGet help from [here](t.me/FlicksSupport)"
                 )
