@@ -23,7 +23,7 @@ from math import ceil
 from telethon import Button, custom, events, functions
 from telethon.tl.functions.users import GetFullUserRequest
 
-from telebot import ALIVE_NAME, CMD_HELP, CMD_LIST, CUSTOM_PMPERMIT, bot
+from telebot import ALIVE_NAME, CMD_HELP, CMD_LIST, bot, tgbot
 from telebot.plugins import telestats
 from telebot.telebotConfig import Var
 
@@ -41,16 +41,19 @@ if mybot.startswith("@"):
     botname = mybot
 else:
     botname = f"@{mybot}"
-LOG_GP = Var.PRIVATE_GROUP_ID
+LOG_GP = BOTLOG_CHATID
+CUSTOM_PMPERMIT = None
 MESAG = (
     str(CUSTOM_PMPERMIT)
     if CUSTOM_PMPERMIT
-    else "`TeleBot PM security! Please wait for me to approve you. 😊"
+    else "`Userbot PM security! Please wait for me to approve you. 😊"
 )
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "TeleBot User"
 USER_BOT_WARN_ZERO = "`I had warned you not to spam. Now you have been blocked and reported until further notice.`\n\n**GoodBye!** "
 
-if Var.LOAD_MYBOT == "True":
+LOAD_MYBOT = "True"
+
+if LOAD_MYBOT == "True":
     USER_BOT_NO_WARN = (
         "**PM Security of [{}](tg://user?id={})**\n\n"
         "{}\n\n"
@@ -72,7 +75,7 @@ CUSTOM_HELP_EMOJI = os.environ.get("CUSTOM_HELP_EMOJI", "⚡")
 HELP_ROWS = int(os.environ.get("HELP_ROWS", 5))
 HELP_COLOUMNS = int(os.environ.get("HELP_COLOUMNS", 3))
 
-if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
+if BOT_USERNAME is not None and tgbot is not None:
 
     @tgbot.on(events.InlineQuery)  # pylint:disable=E0602
     async def inline_handler(event):
@@ -83,7 +86,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
             rev_text = query[::-1]
             buttons = paginate_help(0, CMD_LIST, "helpme")
             result = builder.article(
-                "© TeleBot Help",
+                "© Flicks Help",
                 text="{}\nCurrently Loaded Plugins: {}".format(query, len(CMD_LIST)),
                 buttons=buttons,
                 link_preview=False,
@@ -91,7 +94,7 @@ if Var.TG_BOT_USER_NAME_BF_HER is not None and tgbot is not None:
         elif event.query.user_id == bot.uid and query == "stats":
             result = builder.article(
                 title="Stats",
-                text=f"**TeleBot Stats For [{DEFAULTUSER}](tg://user?id={myid})**\n\n__Bot is functioning normally, master!__\n\n(c) @TeleBotSupport",
+                text=f"**Userbot Stats For [{DEFAULTUSER}](tg://user?id={myid})**\n\n__Bot is functioning normally, master!__\n\n(c) @TeleBotSupport",
                 buttons=[
                     [custom.Button.inline("Stats", data="statcheck")],
                     [Button.url("Repo", "https://github.com/xditya/TeleBot")],
