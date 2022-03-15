@@ -67,6 +67,8 @@ STRING_SESSION = os.environ.get("STRING_SESSION") or None
 
 ALIVE_NAME = os.environ.get("ALIVE_NAME", None)
 
+BOT_VER = "1.1.0"
+
 BOTLOG = os.environ.get("BOTLOG") == "True"
 
 BOTLOG_CHATID = int(os.environ.get("BOTLOG_CHATID")) if BOTLOG else 0
