@@ -3,7 +3,7 @@ FROM zakaryan2004/userbot_docker:latest
 ENV PATH="/usr/src/app/bin:$PATH"
 WORKDIR /usr/src/app
 
-RUN git clone https://github.com/farizjs/Telegram-UserBot.git -b master ./
+RUN git clone https://github.com/farizjs/Telegram-Paperplane.git -b master ./
 
 #
 # Copies session and config(if it exists)
