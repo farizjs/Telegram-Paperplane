@@ -16,8 +16,7 @@
 
 import os
 
-from telebot import ALIVE_NAME, CMD_HELP, CMD_LIST
-from telebot.telebotConfig import Config
+from userbot import ALIVE_NAME, BOT_USERNAME, CMD_HELP, CMD_LIST
 
 DEFAULTUSER = ALIVE_NAME
 CUSTOM_HELP_EMOJI = "⚡"
