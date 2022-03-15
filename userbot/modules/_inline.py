@@ -23,20 +23,17 @@ from math import ceil
 from telethon import Button, custom, events, functions
 from telethon.tl.functions.users import GetFullUserRequest
 
-from telebot import ALIVE_NAME, CMD_HELP, CMD_LIST, bot, tgbot
-from telebot.plugins import telestats
-from telebot.telebotConfig import Var
+from userbot import ALIVE_NAME, CMD_HELP, CMD_LIST, bot, tgbot
+from userbot.helper import telestats
 
-PMPERMIT_PIC = os.environ.get("PMPERMIT_PIC", None)
-TELEPIC = (
-    PMPERMIT_PIC
-    if PMPERMIT_PIC
-    else "https://telegra.ph/file/92cfbab6598148837c2e4.jpg"
-)
+PMPERMIT_PIC = "https://telegra.ph/file/46a00f338fd3db59e5a65.jpg"
+TELEPIC = PMPERMIT_PIC
+
 PM_WARNS = {}
 PREV_REPLY_MESSAGE = {}
-myid = bot.uid
-mybot = Var.TG_BOT_USER_NAME_BF_HER
+user = bot.get_me()
+myid = user.id
+mybot = BOT_USERNAME
 if mybot.startswith("@"):
     botname = mybot
 else:
@@ -48,7 +45,7 @@ MESAG = (
     if CUSTOM_PMPERMIT
     else "`Userbot PM security! Please wait for me to approve you. 😊"
 )
-DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "TeleBot User"
+DEFAULTUSER = user.first_name
 USER_BOT_WARN_ZERO = "`I had warned you not to spam. Now you have been blocked and reported until further notice.`\n\n**GoodBye!** "
 
 LOAD_MYBOT = "True"
@@ -62,7 +59,7 @@ if LOAD_MYBOT == "True":
             DEFAULTUSER, myid, MESAG, botname
         )
     )
-elif Var.LOAD_MYBOT == "False":
+elif LOAD_MYBOT == "False":
     USER_BOT_NO_WARN = (
         "**PM Security of [{}](tg://user?id={})**\n\n"
         "{}\n"
@@ -94,14 +91,14 @@ if BOT_USERNAME is not None and tgbot is not None:
         elif event.query.user_id == bot.uid and query == "stats":
             result = builder.article(
                 title="Stats",
-                text=f"**Userbot Stats For [{DEFAULTUSER}](tg://user?id={myid})**\n\n__Bot is functioning normally, master!__\n\n(c) @TeleBotSupport",
+                text=f"**Userbot Stats For [{DEFAULTUSER}](tg://user?id={myid})**\n\n__Bot is functioning normally, master!__\n\n(c) @FlicksSupport",
                 buttons=[
                     [custom.Button.inline("Stats", data="statcheck")],
-                    [Button.url("Repo", "https://github.com/xditya/TeleBot")],
+                    [Button.url("Repo", "https://github.com/farizjs/Flicks-Project")],
                     [
                         Button.url(
-                            "Deploy Now!",
-                            "https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2Fxditya%2FTeleBot&template=https%3A%2F%2Fgithub.com%2Fxditya%2FTeleBot",
+                            "Channel!",
+                            "t.me/TheFlicksUserbot",
                         )
                     ],
                 ],
@@ -123,36 +120,36 @@ if BOT_USERNAME is not None and tgbot is not None:
         elif event.query.user_id == bot.uid and query == "repo":
             result = builder.article(
                 title="Repository",
-                text=f"TeleBot - Telegram Userbot.",
+                text=f"FlicksProject - Telegram Userbot.",
                 buttons=[
                     [
-                        Button.url("Repo", "https://github.com/xditya/TeleBot"),
+                        Button.url("Repo", "https://github.com/farizjs/Flicks-Project"),
                         Button.url(
-                            "Deploy",
-                            "https://dashboard.heroku.com/new?button-url=https%3A%2F%2Fgithub.com%2Fxditya%2FTeleBot&template=https%3A%2F%2Fgithub.com%2Fxditya%2FTeleBot",
+                            "Channel",
+                            "t.me/TheFlicksUserbot",
                         ),
                     ],
-                    [Button.url("Support", "https://t.me/TeleBotSupport")],
+                    [Button.url("Support", "https://t.me/FlicksSupport")],
                 ],
             )
         else:
             result = builder.article(
                 "Source Code",
-                text="**Welcome to TeleBot**\n\n`Click below buttons for more`",
+                text="**Welcome to FlicksProject**\n\n`Click below buttons for more`",
                 buttons=[
-                    [custom.Button.url("Creator👨‍🦱", "https://t.me/its_xditya")],
+                    [custom.Button.url("Creator👨‍🦱", "https://t.me/farizjs")],
                     [
                         custom.Button.url(
-                            "👨‍💻Source Code‍💻", "https://github.com/xditya/TeleBot"
+                            "👨‍💻Source Code‍💻", "https://github.com/farizjs/Flicks-Project"
                         ),
                         custom.Button.url(
-                            "Deploy 🌀",
-                            "https://dashboard.heroku.com/new?template=https%3A%2F%2Fgithub.com%2Fxditya%2FTeleBot",
+                            "Channel",
+                            "t.me/TheFlicksUserbot",
                         ),
                     ],
                     [
                         custom.Button.url(
-                            "Updates and Support Group↗️", "https://t.me/TeleBotSupport"
+                            "Support Group↗️", "https://t.me/FlicksSupport"
                         )
                     ],
                 ],
@@ -173,7 +170,7 @@ if BOT_USERNAME is not None and tgbot is not None:
             await event.edit(buttons=buttons)
         else:
             reply_pop_up_alert = (
-                "Please get your own Userbot from @TeleBotHelp , and don't use mine!"
+                "Please get your own Userbot from @FlicksSupport , and don't use mine!"
             )
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
@@ -184,7 +181,7 @@ if BOT_USERNAME is not None and tgbot is not None:
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
         else:
             await event.edit(
-                f"This is the PM Security for {DEFAULTUSER} to keep away spammers and retards.\n\nProtected by [TeleBot](t.me/TeleBotSupport)"
+                f"This is the PM Security for {DEFAULTUSER} to keep away spammers and retards.\n\nProtected by [Userbot](t.me/FlicksSupport)"
             )
 
     @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile(b"reopen")))
@@ -276,7 +273,7 @@ if BOT_USERNAME is not None and tgbot is not None:
                 "Menu Closed!!", buttons=[Button.inline("Re-open Menu", data="reopen")]
             )
         else:
-            reply_pop_up_alert = "Please get your own userbot from @TeleBotSupport "
+            reply_pop_up_alert = "Please get your own userbot from @FlicksSupport "
             await event.answer(reply_pop_up_alert, cache_time=0, alert=True)
 
     @tgbot.on(events.callbackquery.CallbackQuery(data=re.compile(b"statcheck")))
@@ -329,7 +326,7 @@ if BOT_USERNAME is not None and tgbot is not None:
             else:
                 reply_pop_up_alert = help_string
             reply_pop_up_alert += "\n Use .unload {} to remove this plugin\n\
-                © Telebot".format(
+                © FlicksProject".format(
                 plugin_name
             )
             if len(help_string) >= 140:
