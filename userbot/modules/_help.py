@@ -17,6 +17,7 @@
 import os
 
 from userbot import ALIVE_NAME, BOT_USERNAME, CMD_HELP, CMD_LIST
+from userbot.events import register
 
 DEFAULTUSER = ALIVE_NAME
 CUSTOM_HELP_EMOJI = "⚡"
