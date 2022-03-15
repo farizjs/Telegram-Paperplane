@@ -24,7 +24,7 @@ from telethon import Button, custom, events, functions
 from telethon.tl.functions.users import GetFullUserRequest
 
 from userbot import ALIVE_NAME, CMD_HELP, CMD_LIST, bot, tgbot
-from userbot.helper import telestats
+from userbot.helper.mainbot import telestats
 
 PMPERMIT_PIC = "https://telegra.ph/file/46a00f338fd3db59e5a65.jpg"
 TELEPIC = PMPERMIT_PIC
