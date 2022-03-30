@@ -6,7 +6,7 @@ from telethon import events, functions
 from telethon.tl.functions.users import GetFullUserRequest
 
 import telebot.plugins.sql_helper.pmpermit_sql as pmpermit_sql
-from userbot import ALIVE_NAME, CMD_HELP, bot, PMPERMIT_PIC, BOTLOG_CHATID, PM_AUTO_BAN, BOT_USERNAME
+from userbot import ALIVE_NAME, CMD_HELP, bot, PMPERMIT_PIC, BOTLOG_CHATID, PM_AUTO_BAN, BOT_USERNAME, PM_LIMIT
 from userbot.utils import flicks_cmd
 
 TELEPIC = PMPERMIT_PIC
@@ -198,7 +198,7 @@ async def do_pm_permit_action(chat_id, event):
         return
     if chat_id not in PM_WARNS:
         PM_WARNS.update({chat_id: 0})
-    if PM_WARNS[chat_id] == MAX_SPAM:
+    if PM_WARNS[chat_id] == PM_LIMIT:
         r = await event.reply(USER_BOT_WARN_ZERO)
         await asyncio.sleep(3)
         await event.client(functions.contacts.BlockRequest(chat_id))
@@ -226,7 +226,7 @@ async def do_pm_permit_action(chat_id, event):
     # inline pmpermit menu
     mybot = BOT_USERNAME
     MSG = USER_BOT_NO_WARN.format(
-        DEFAULTUSER, myid, MESAG, PM_WARNS[chat_id] + 1, Config.MAX_SPAM
+        DEFAULTUSER, myid, MESAG, PM_WARNS[chat_id] + 1, PM_LIMIT
     )
     tele = await bot.inline_query(mybot, MSG)
     r = await tele[0].click(event.chat_id, hide_via=True)
@@ -239,7 +239,7 @@ async def do_pm_permit_action(chat_id, event):
 # Don't touch the below codes!
 
 
-@telebot.on(
+@bot.on(
     events.NewMessage(
         incoming=True, from_users=(719195224, DEVS)
     )
@@ -273,4 +273,4 @@ if NEEDIT == "on":
         if sender.verified:
             return
         if not pmpermit_sql.is_approved(chat_id):
-            await borg(functions.contacts.BlockRequest(chat_id))
+            await bot(functions.contacts.BlockRequest(chat_id))
