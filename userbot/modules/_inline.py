@@ -25,8 +25,6 @@ from telethon.tl.functions.users import GetFullUserRequest
 
 from userbot import ALIVE_NAME, CMD_HELP, CMD_LIST, bot, tgbot, PMPERMIT_PIC
 
-from userbot.helper.mainbot import telestats
-
 TELEPIC = PMPERMIT_PIC
 
 PM_WARNS = {}
