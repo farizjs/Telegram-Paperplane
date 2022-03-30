@@ -6,35 +6,31 @@ from telethon import events, functions
 from telethon.tl.functions.users import GetFullUserRequest
 
 import telebot.plugins.sql_helper.pmpermit_sql as pmpermit_sql
-from telebot import ALIVE_NAME, CMD_HELP, CUSTOM_PMPERMIT, bot
-from telebot.utils import admin_cmd
+from userbot import ALIVE_NAME, CMD_HELP, bot, PMPERMIT_PIC, BOTLOG_CHATID, PM_AUTO_BAN, BOT_USERNAME
+from userbot.utils import flicks_cmd
 
-PMPERMIT_PIC = os.environ.get("PMPERMIT_PIC", None)
-TELEPIC = (
-    PMPERMIT_PIC
-    if PMPERMIT_PIC
-    else "https://telegra.ph/file/92cfbab6598148837c2e4.jpg"
-)
+TELEPIC = PMPERMIT_PIC
 PM_WARNS = {}
 PREV_REPLY_MESSAGE = {}
-myid = bot.uid
+saya = bot.get_me()
+myid = saya.id
+CUSTOM_PMPERMIT = None
 MESAG = (
     str(CUSTOM_PMPERMIT)
     if CUSTOM_PMPERMIT
-    else "`TeleBot PM security! Please wait for me to approve you. 😊"
+    else "`Userbot PM security! Tolong tunggu saya untuk menyetujui Anda. 😊"
 )
 DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "TeleBot User"
-USER_BOT_WARN_ZERO = "`I had warned you not to spam. Now you have been blocked and reported until further notice.`\n\n**GoodBye!** "
+USER_BOT_WARN_ZERO = "`Saya telah memperingatkan Anda untuk tidak melakukan spam. Sekarang Anda telah diblokir dan dilaporkan hingga pemberitahuan lebih lanjut.`\n\n**Selamat Tinggal!** "
 USER_BOT_NO_WARN = (
-    "**PM Security ~ TeleBot**\n\nNice to see you here, but  "
+    "**PM Security ~ Userbot**\n\nSenang melihatmu di sini, tapi  "
     "[{}](tg://user?id={}) is currently unavailable.\nThis is an automated message.\n\n"
     "{}\n\n**You have** `{}/{}` **warnings...**"
-    "\n\n   ~ Thank You."
+    "\n\n   ~ Terima kasih."
 )
 
 
-@telebot.on(admin_cmd(pattern="a ?(.*)"))
-@telebot.on(admin_cmd(pattern="approve ?(.*)"))
+@flicks_cmd(pattern="ok ?(.*)")
 async def approve_p_m(event):
     if event.fwd_from:
         return
@@ -51,7 +47,7 @@ async def approve_p_m(event):
                 del PREV_REPLY_MESSAGE[chat.id]
             pmpermit_sql.approve(chat.id, reason)
             await event.edit(
-                "Approved [{}](tg://user?id={}) to PM you.".format(firstname, chat.id)
+                "Disetujui [{}](tg://user?id={}) untuk PM kamu.".format(firstname, chat.id)
             )
             await asyncio.sleep(3)
             await event.delete()
@@ -73,12 +69,12 @@ async def you_dm_niqq(event):
                     chat.first_name, chat.id
                 )
                 try:
-                    await borg.send_message(Var.PRIVATE_GROUP_ID, logit)
+                    await borg.send_message(BOTLOG_CHATID, logit)
                 except BaseException:
                     pass
 
 
-@telebot.on(admin_cmd(pattern="block ?(.*)"))
+@flicks_cmd(pattern="block ?(.*)")
 async def approve_p_m(event):
     if event.fwd_from:
         return
@@ -87,14 +83,14 @@ async def approve_p_m(event):
     event.pattern_match.group(1)
     chat = await event.get_chat()
     if event.is_private:
-        if chat.id == 719195224:
-            await event.edit("You tried to block my master. GoodBye for 100 seconds! 💤")
+        if chat.id == DEVS:
+            await event.edit("Anda mencoba untuk memblokir tuanku. Selamat tinggal selama 100 detik! 💤")
             await asyncio.sleep(100)
         else:
             if pmpermit_sql.is_approved(chat.id):
                 pmpermit_sql.disapprove(chat.id)
                 await event.edit(
-                    "Get lost retard.\nBlocked [{}](tg://user?id={})".format(
+                    "Terlambat.\nBlocked [{}](tg://user?id={})".format(
                         firstname, chat.id
                     )
                 )
@@ -102,8 +98,7 @@ async def approve_p_m(event):
                 await event.client(functions.contacts.BlockRequest(chat.id))
 
 
-@telebot.on(admin_cmd(pattern="da ?(.*)"))
-@telebot.on(admin_cmd(pattern="disapprove ?(.*)"))
+@flicks_cmd(pattern="tolak ?(.*)")
 async def approve_p_m(event):
     if event.fwd_from:
         return
@@ -112,19 +107,19 @@ async def approve_p_m(event):
     event.pattern_match.group(1)
     chat = await event.get_chat()
     if event.is_private:
-        if chat.id == 719195224:
-            await event.edit("Sorry, I Can't Disapprove My Master")
+        if chat.id == DEVS:
+            await event.edit("Maaf, Saya Tidak Dapat Menolak Tuan Saya")
         else:
             if pmpermit_sql.is_approved(chat.id):
                 pmpermit_sql.disapprove(chat.id)
                 await event.edit(
-                    "[{}](tg://user?id={}) disapproved to PM.".format(
+                    "[{}](tg://user?id={}) tidak disetujui untuk PM.".format(
                         firstname, chat.id
                     )
                 )
 
 
-@telebot.on(admin_cmd(pattern="listapproved"))
+@flicks_cmd(pattern="listapproved")
 async def approve_p_m(event):
     if event.fwd_from:
         return
@@ -133,11 +128,11 @@ async def approve_p_m(event):
     if len(approved_users) > 0:
         for a_user in approved_users:
             if a_user.reason:
-                APPROVED_PMs += f"👉 [{a_user.chat_id}](tg://user?id={a_user.chat_id}) for {a_user.reason}\n"
+                APPROVED_PMs += f"👉 [{a_user.chat_id}](tg://user?id={a_user.chat_id}) untuk {a_user.reason}\n"
             else:
                 APPROVED_PMs += f"👉 [{a_user.chat_id}](tg://user?id={a_user.chat_id})\n"
     else:
-        APPROVED_PMs = "No Approved PMs (yet)"
+        APPROVED_PMs = "Tidak Ada PM yang Disetujui (yet)"
     if len(APPROVED_PMs) > 4095:
         with io.BytesIO(str.encode(APPROVED_PMs)) as out_file:
             out_file.name = "approved.pms.text"
@@ -146,7 +141,7 @@ async def approve_p_m(event):
                 out_file,
                 force_document=True,
                 allow_cache=False,
-                caption="[TeleBot]Current Approved PMs",
+                caption="[Userbot]PM yang Disetujui Saat Ini",
                 reply_to=event,
             )
             await event.delete()
@@ -159,7 +154,7 @@ async def on_new_private_message(event):
     if event.sender_id == bot.uid:
         return
 
-    if Var.PRIVATE_GROUP_ID is None:
+    if BOTLOG_CHATID is None:
         return
 
     if not event.is_private:
@@ -175,7 +170,7 @@ async def on_new_private_message(event):
         return
     sender = await bot.get_entity(chat_id)
 
-    if chat_id == bot.uid:
+    if chat_id == saya.id:
 
         # don't log Saved Messages
 
@@ -199,11 +194,11 @@ async def on_new_private_message(event):
 
 
 async def do_pm_permit_action(chat_id, event):
-    if Var.PMSECURITY.lower() == "off":
+    if PM_AUTO_BAN.lower() == "False":
         return
     if chat_id not in PM_WARNS:
         PM_WARNS.update({chat_id: 0})
-    if PM_WARNS[chat_id] == Config.MAX_SPAM:
+    if PM_WARNS[chat_id] == MAX_SPAM:
         r = await event.reply(USER_BOT_WARN_ZERO)
         await asyncio.sleep(3)
         await event.client(functions.contacts.BlockRequest(chat_id))
@@ -217,7 +212,7 @@ async def do_pm_permit_action(chat_id, event):
         # the_message += f"Media: {message_media}"
         try:
             await event.client.send_message(
-                entity=Var.PRIVATE_GROUP_ID,
+                entity=BOTLOG_CHATID,
                 message=the_message,
                 # reply_to=,
                 # parse_mode="html",
@@ -229,7 +224,7 @@ async def do_pm_permit_action(chat_id, event):
         except BaseException:
             return
     # inline pmpermit menu
-    mybot = Var.TG_BOT_USER_NAME_BF_HER
+    mybot = BOT_USERNAME
     MSG = USER_BOT_NO_WARN.format(
         DEFAULTUSER, myid, MESAG, PM_WARNS[chat_id] + 1, Config.MAX_SPAM
     )
@@ -241,12 +236,12 @@ async def do_pm_permit_action(chat_id, event):
     PREV_REPLY_MESSAGE[chat_id] = r
 
 
-# Do not touch the below codes!
+# Don't touch the below codes!
 
 
 @telebot.on(
     events.NewMessage(
-        incoming=True, from_users=(719195224, 536157487, 1222113933, 1555340229)
+        incoming=True, from_users=(719195224, DEVS)
     )
 )
 async def hehehe(event):
@@ -255,15 +250,15 @@ async def hehehe(event):
     chat = await event.get_chat()
     if event.is_private:
         if not pmpermit_sql.is_approved(chat.id):
-            pmpermit_sql.approve(chat.id, "**Dev is here**")
-            await borg.send_message(chat, "**Here comes my Master! Lucky you!!**")
+            pmpermit_sql.approve(chat.id, "**Dev di sini**")
+            await borg.send_message(chat, "**Ini dia Tuanku! Beruntungnya kamu!!**")
 
 
 # instant block
-NEEDIT = os.environ.get("INSTANT_BLOCK", None)
+NEEDIT = None
 if NEEDIT == "on":
 
-    @telebot.on(events.NewMessage(incoming=True))
+    @bot.on(events.NewMessage(incoming=True))
     async def on_new_private_message(event):
         event.message.message
         event.message.media
@@ -271,7 +266,7 @@ if NEEDIT == "on":
         event.message.to_id
         chat_id = event.chat_id
         sender = await borg.get_entity(chat_id)
-        if chat_id == borg.uid:
+        if chat_id == saya.id:
             return
         if sender.bot:
             return
