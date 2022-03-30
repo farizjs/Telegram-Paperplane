@@ -20,7 +20,7 @@ MESAG = (
     if CUSTOM_PMPERMIT
     else "`Userbot PM security! Tolong tunggu saya untuk menyetujui Anda. 😊"
 )
-DEFAULTUSER = str(ALIVE_NAME) if ALIVE_NAME else "TeleBot User"
+DEFAULTUSER = ALIVE_NAME
 USER_BOT_WARN_ZERO = "`Saya telah memperingatkan Anda untuk tidak melakukan spam. Sekarang Anda telah diblokir dan dilaporkan hingga pemberitahuan lebih lanjut.`\n\n**Selamat Tinggal!** "
 USER_BOT_NO_WARN = (
     "**PM Security ~ Userbot**\n\nSenang melihatmu di sini, tapi  "
